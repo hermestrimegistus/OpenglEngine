@@ -98,22 +98,22 @@ void MaxHeap<T,Len>::MaxHeapify(int index)
   T& lVal = m_Array[left];
   T& rVal = m_Array[right];
   int largest = index;
-  int largestValue;
+  T& largestValue = m_Array[index];
   if(left <= m_Size && lVal > iVal){
     largest = left;
     largestValue = lVal;
   }
-  std::cout<<"mSize is "<<m_Size<<"\n";
-  std::cout<<"right is "<<right<<"\t"<<rVal<<"\n";
-  std::cout<<"left is "<<left<<"\t"<<lVal<<"\n";
+  //std::cout<<"mSize is "<<m_Size<<"\n";
+  //std::cout<<"right is "<<right<<"\t"<<rVal<<"\n";
+  //std::cout<<"left is "<<left<<"\t"<<lVal<<"\n";
   if(right <= m_Size && rVal > largestValue){
     largest = right;
   }
-  std::cout<<"largest is "<<largest<<"\n";
+  //std::cout<<"largest is "<<largest<<"\n";
   if(largest != index){
     std::cout<<"Swapping "<<index <<" and "<<largest<<"\n";
     //R
-    int temp = m_Array[index];
+    T& temp = m_Array[index];
     m_Array[index] = m_Array[largest];
     m_Array[largest] = temp;
     MaxHeapify(largest);
@@ -124,10 +124,10 @@ template<typename T,size_t aLen>
 MaxHeap<T,aLen>* BuildMaxHeap(T(&arr)[aLen]){
   MaxHeap<T,aLen>* h = new MaxHeap<T,aLen>();
   int i;
-  std::cout<<"aLen is "<<aLen<<"\n";
+  //std::cout<<"aLen is "<<aLen<<"\n";
   for(i = 0;i<aLen;++i){
     h->m_Array[i] = arr[i];
-    std::cout<<"index "<<i<<" val: "<<arr[i]<<"\t";
+    //std::cout<<"index "<<i<<" val: "<<arr[i]<<"\t";
   }
   h->m_Size = i-1;
   //std::cout<<"heap size is "<<i<<"\n";
@@ -143,4 +143,3 @@ void MaxHeap<T,aLen>::BuildHeap()
     MaxHeapify(i);
   }
 }
-
