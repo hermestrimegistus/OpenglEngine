@@ -1,5 +1,6 @@
 #pragma once
 #include<iostream>
+//SSH check
 template<typename T>
 class LList;
 template<typename T>
@@ -76,18 +77,26 @@ template<typename T>
 void LList<T>::Delete(int key)
 {
   Node<T>* found = Search(key);
-  if(found && found->prev){
-    found->prev->next = found->next;
-    if(found->next){
-      found->next->prev = found->prev;
-    }
-  }
-  else if(found)//First pos
+  if(found)
   {
-    start = nullptr;
+    if(found->prev == NULL)
+    {
+      start = found->next;
+      if(start)
+      {
+        start->prev = NULL;
+      }
+    }
+    else
+    {
+      if(found->next)
+      {
+	found->next->prev = found->prev;
+      }
+      found->prev->next = found->next;
+    }
+    delete found;
   }
-  std::cout<<"Delete"<<"\n";
-  delete found;
 }
 template<typename T>
 void LList<T>::Print()
