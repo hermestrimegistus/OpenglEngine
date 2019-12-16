@@ -10,6 +10,8 @@ class Node
   Node* next;
   Node* prev;
   public:
+  int Key(){return key;}
+  T& Data(){return data;}
   Node(){}
   Node(T _data,int _key){
     data = _data;
@@ -28,7 +30,19 @@ class LList
   void Print();
   void Insert(const T&, int key);
   void Delete(int key);
+  Node<T>* Search(int );
 };
+template<typename T>
+Node<T>* LList<T>::Search(int key)
+{
+  Node<T>* p = start;
+  while(p != nullptr){
+    if(key == p->key)
+      return p;
+    p=p->next;
+  }
+  return nullptr;
+}
 template<typename T>
 LList<T>::~LList()
 {
@@ -61,6 +75,19 @@ void LList<T>::Insert(const T& _data,int key)
 template<typename T>
 void LList<T>::Delete(int key)
 {
+  Node<T>* found = Search(key);
+  if(found && found->prev){
+    found->prev->next = found->next;
+    if(found->next){
+      found->next->prev = found->prev;
+    }
+  }
+  else if(found)//First pos
+  {
+    start = nullptr;
+  }
+  std::cout<<"Delete"<<"\n";
+  delete found;
 }
 template<typename T>
 void LList<T>::Print()
@@ -68,7 +95,8 @@ void LList<T>::Print()
   Node<T>* p = start;
   while(p!=nullptr)
   {
-    std::cout<<p->data<<"\n";
+    std::cout<<p->data<<"\t";
     p=p->next;
   }
+  std::cout<<"\n";
 }
