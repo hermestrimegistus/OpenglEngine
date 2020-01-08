@@ -1,0 +1,4 @@
+AI.
+An agent shall have "sensor" and "actuator"
+A sensor shall maintain a queue of "percept sequence"
+A percept is added to the queue by "environment"
