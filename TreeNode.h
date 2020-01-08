@@ -1,3 +1,5 @@
+#ifndef _TREE_NODE
+#define _TREE_NODE
 #include<limits.h>
 struct Node
 {
@@ -41,3 +43,4 @@ Node Node::operator=(const Node& a)
 	Node p(a);
 	return p;
 }
+#endif
