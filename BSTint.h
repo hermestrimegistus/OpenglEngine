@@ -40,27 +40,27 @@ bool Tree::Orphan(Node* p)
 Node* Tree::LinearSearch(int k)
 {
 	Node* runner = root;
-	Node* backer = 0;
 	while(runner){
-		backer = runner;
-		if(k <= runner->key){
+        if(k == runner->key)
+          return runner;
+		else if(k <= runner->key){
 			runner = runner->left;
 		}
 		else
 			runner = runner->right;
 	}
-	return backer;
+	return 0;
 }
 Node* Tree::Predecessor(Node* p)
 {
-	if(!p || p == root){
+	if(p == root){
 		return 0;
 	}
 	//Predecessor lies on left sub-tree
 	Node* runner = p;
 	Node* rightBranch = 0;
 	if(runner->left){
-		return Minimum(runner->right);
+		return Minimum(runner->left);
 	}
 	Node* y = runner->parent;
 	while(y->left == runner){
