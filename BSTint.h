@@ -22,15 +22,89 @@ class Tree
 	void Delete(int _key);
 	void Delete(Node*);
 
+	void Inorder();
 	void Inorder(Node*);
+    void Preorder();
 	void Preorder(Node*);
 	void Postorder(Node*);
 
 	void Transplant(Node* discard,Node* attach);
-	void Inorder();
+    void Transplant(int,int);
 	bool Orphan(Node*);
 	Node* LinearSearch(int);
 };
+void Tree::Delete(int _key)
+{
+  Node* d = LinearSearch(_key);
+  Delete(d);
+}
+void Tree::Delete(Node* d)
+{
+  if(!d) return;
+  if(!d->left){
+    Transplant(d,d->right);
+    d->right->parent = d->parent;
+  }
+  else if(!d->right)
+  {
+    Transplant(d,d->left);
+    d->left->parent = d->parent;
+  }
+  else{
+    //Find d's successor;
+    Node* s = Successor(d);
+    //Replace d's successort with it's right subtree;
+    Transplant(s,s->right);//s is not reachable now;
+    Transplant(d,s);
+    s->right = d->right;
+    s->left = d->left;
+  }
+  delete d;
+}
+void Tree::Transplant(int a,int b)
+{
+  Node* r = LinearSearch(a);
+  Node* m = LinearSearch(b);
+  Transplant(r,m);
+}
+void Tree::Transplant(Node* discard, Node* put)
+{
+  if(!discard){
+    return;
+  }
+  if(discard == root){
+    root = put;
+  }
+  else if(discard == discard->parent->left){
+    discard->parent->left = put;
+  }
+  else
+  {
+    discard->parent->right = put;
+  }
+  if(put){
+    put->parent = discard->parent;
+  }
+  /*if(put->parent && put->parent->left == put)
+  {
+    put->parent->left = 0;
+  }
+  else if(put->parent){
+    put->parent->right = 0;
+  }*/
+}
+Node* Tree::Successor(Node* p)
+{
+  if(!p) return 0;
+  if(p->right)
+    return Minimum(p->right);
+  Node* y = p->parent;
+  while(y && y->right == p){
+    p = y;
+    y = p->parent; 
+  }
+  return y;
+}
 bool Tree::Orphan(Node* p)
 {
 	if(p)
@@ -57,15 +131,13 @@ Node* Tree::Predecessor(Node* p)
 		return 0;
 	}
 	//Predecessor lies on left sub-tree
-	Node* runner = p;
-	Node* rightBranch = 0;
-	if(runner->left){
-		return Minimum(runner->left);
+	if(p->left){
+		return Maximum(p->left);
 	}
-	Node* y = runner->parent;
-	while(y->left == runner){
-		runner = y;
-		y = runner->parent;
+	Node* y = p->parent;
+	while(y->left == p){
+		p = y;
+		y = p->parent;
 	}
 	return y;
 }
@@ -130,4 +202,17 @@ void Tree::Inorder()
 {
 	Inorder(root);
 	fprintf(stdout,"\n");
+}
+void Tree::Preorder()
+{
+ Preorder(root);
+ fprintf(stdout,"\n"); 
+}
+void Tree::Preorder(Node* p)
+{
+  if(p){
+    fprintf(stdout,"%d ",p->key);
+    Preorder(p->left);
+    Preorder(p->right);
+  }
 }

@@ -23,9 +23,9 @@ Node::Node():left(0),right(0),parent(0),key(INT_MAX)
 
 Node::~Node()
 {
-	CDEL(left);
-	CDEL(right);
-	CDEL(parent);
+  left = 0;
+  right = 0;
+  parent = 0;
 }
 Node::Node(int _key):key(_key),
 	right(0),left(0)
