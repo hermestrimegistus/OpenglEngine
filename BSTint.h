@@ -32,6 +32,7 @@ class Tree
     void Transplant(int,int);
 	bool Orphan(Node*);
 	Node* LinearSearch(int);
+    void PostDelete(Node*);
 };
 void Tree::Delete(int _key)
 {
@@ -164,8 +165,17 @@ Node* Tree::Maximum(Node* p)
 Tree::Tree():root(0)
 {
 }
+void Tree::PostDelete(Node* p)
+{
+  if(p){
+    PostDelete(p->left);
+    PostDelete(p->right);
+    delete p;
+  }
+}
 Tree::~Tree()
 {
+  PostDelete(root);
 }
 void Tree::Insert(int k)
 {
