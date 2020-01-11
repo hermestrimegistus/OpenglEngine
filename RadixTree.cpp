@@ -25,15 +25,40 @@ struct Radix
   Radix();
   ~Radix();
   void Insert(const char* arg);
+  void Preorder();
+  void Preorder(Node* p);
+  void PostOrderDelete(Node*);
 };
 
 Radix::Radix()
 {
   root = new Node();
-  strcpy(root->Value,"Dummy");
+  strcpy(root->Value,"root");
+}
+void Radix::Preorder(Node* p)
+{
+  if(p){
+    fprintf(stdout,"%s\t",p->Value);
+    Preorder(p->left);
+    Preorder(p->right);
+  }
+}
+void Radix::Preorder()
+{
+  Preorder(root);
+  fprintf(stdout,"\n");
+}
+void Radix::PostOrderDelete(Node* p)
+{
+  if(p){
+    PostOrderDelete(p->left);
+    PostOrderDelete(p->right);
+    delete p;
+  }
 }
 Radix::~Radix()
 {
+  PostOrderDelete(root);
 }
 void Radix::Insert(const char* arg)
 {
@@ -43,10 +68,8 @@ void Radix::Insert(const char* arg)
   memset(buffer,0,64);
   int i(0);
   const char* p = arg;
-  char k;
-  while(p)
+  while(*p != '\0')
   {
-    k = *p;
     backer = runner;
     if(*p == '0'){
       runner = runner->left;
@@ -54,7 +77,8 @@ void Radix::Insert(const char* arg)
         Node* t = new Node();
         backer->left = t;
         t->parent = backer;
-        t->Value[t->index++] = k;
+        t->Value[t->index++] = *p;
+        runner = t;
       }
     }
     else{
@@ -63,19 +87,13 @@ void Radix::Insert(const char* arg)
         Node* t = new Node();
         backer->right = t;
         t->parent = backer;
-        t->Value[t->index++] = k;
+        t->Value[t->index++] = *p;
+        runner = t;
       }
     }
     p++;
   }
-  if(backer && k == '0'){
-    backer->left = new Node();
-    strcpy(backer->left->Value,arg);
-  }
-  else if(backer && k == '1'){
-    backer->right = new Node();
-    strcpy(backer->right->Value,arg);
-  }
+  strcpy(runner->Value,arg);
 }
 
 int main()
@@ -83,6 +101,7 @@ int main()
   //How would you insert?
   Radix tree;
   tree.Insert("0100101");
+  tree.Preorder();
   return 0;
 }
 
