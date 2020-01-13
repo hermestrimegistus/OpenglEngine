@@ -134,21 +134,15 @@ int main()
   int i = 0;
   int k;
   struct timespec tv;
-  while(i < 10){
-    sleep(1.3);
+  RBTree rbtree;
+  while(i < 1000){
+    //sleep(1.3);
     clock_gettime(CLOCK_REALTIME,&tv);
-    srand(tv.tv_sec);
-    k = random();
-    fprintf(stdout,"%d\n",k); 
+    srand(tv.tv_nsec);
+    k = random()%1000;
+    rbtree.Insert(k);
+    //fprintf(stdout,"%d\n",k); 
     ++i;
   }
-  RBTree rbtree;
-  rbtree.Insert(5);
-  rbtree.Insert(9);
-  rbtree.Insert(0);
-  rbtree.Insert(1);
-  rbtree.Insert(2);
-  rbtree.Insert(3);
-  rbtree.Insert(4);
   rbtree.InorderPrint();
 }
