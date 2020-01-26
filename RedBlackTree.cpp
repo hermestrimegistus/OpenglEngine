@@ -2,6 +2,8 @@
 #include<time.h>
 #include<stdlib.h>
 #include<unistd.h>
+
+//Adding from Gentoo
 enum Color
 {
   RED,
